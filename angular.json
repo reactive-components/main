@@ -2,7 +2,202 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "main": {
+      "root": "apps/main/",
+      "sourceRoot": "apps/main/src",
+      "projectType": "application",
+      "prefix": "reactive-components",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/main",
+            "index": "apps/main/src/index.html",
+            "main": "apps/main/src/main.ts",
+            "polyfills": "apps/main/src/polyfills.ts",
+            "tsConfig": "apps/main/tsconfig.app.json",
+            "assets": [
+              "apps/main/src/favicon.ico",
+              "apps/main/src/assets",
+              "apps/main/src/manifest.json"
+            ],
+            "styles": [
+              "apps/main/src/styles.css"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/main/src/environments/environment.ts",
+                  "with": "apps/main/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "apps/main/ngsw-config.json"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "main:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "main:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "main:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/main/tsconfig.app.json",
+              "apps/main/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/main/jest.config.js",
+            "tsConfig": "apps/main/tsconfig.spec.json",
+            "setupFile": "apps/main/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "main-e2e": {
+      "root": "apps/main-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/main-e2e/cypress.json",
+            "tsConfig": "apps/main-e2e/tsconfig.e2e.json",
+            "devServerTarget": "main:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "main:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/main-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "utils": {
+      "root": "libs/utils",
+      "sourceRoot": "libs/utils/src",
+      "projectType": "library",
+      "prefix": "reactive-components",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/utils/tsconfig.lib.json",
+            "project": "libs/utils/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/utils/tsconfig.lib.json",
+              "libs/utils/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/utils/jest.config.js",
+            "tsConfig": "libs/utils/tsconfig.spec.json"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "todo": {
+      "root": "libs/todo",
+      "sourceRoot": "libs/todo/src",
+      "projectType": "library",
+      "prefix": "rc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/todo/tsconfig.lib.json",
+            "project": "libs/todo/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/todo/tsconfig.lib.json",
+              "libs/todo/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/todo/jest.config.js",
+            "tsConfig": "libs/todo/tsconfig.spec.json",
+            "setupFile": "libs/todo/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -10,5 +205,6 @@
     },
     "defaultCollection": "@nrwl/schematics"
   },
-  "schematics": {}
+  "schematics": {},
+  "defaultProject": "main"
 }

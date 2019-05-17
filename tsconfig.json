@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@reactive-components/utils": ["libs/utils/src/index.ts"],
+      "@reactive-components/todo": ["libs/todo/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
