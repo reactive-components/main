@@ -16,7 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@reactive-components/utils": ["libs/utils/src/index.ts"],
-      "@reactive-components/todo": ["libs/todo/src/index.ts"]
+      "@reactive-components/todo": ["libs/todo/src/index.ts"],
+      "@reactive-components/log": ["libs/log/src/index.ts"],
+      "@reactive-components/store": ["libs/store/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

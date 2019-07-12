@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { TodoModule } from '@reactive-components/todo';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { LogModule } from '@reactive-components/log';
 
 @NgModule({
   declarations: [AppComponent],
@@ -13,6 +14,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     RouterModule.forRoot([], { initialNavigation: 'enabled' }),
     TodoModule,
+    LogModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],

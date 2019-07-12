@@ -1,1 +1,3 @@
 <rc-todo></rc-todo>
+<input (change)="showLog = !showLog" type="checkbox" name="showLog" id="showLog">
+<rc-log *ngIf="showLog"></rc-log>

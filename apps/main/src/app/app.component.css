@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+rc-todo {
+  flex: 1;
+}
+
+rc-log {
+  flex: 0.5;
+}

@@ -23,9 +23,7 @@
               "apps/main/src/assets",
               "apps/main/src/manifest.json"
             ],
-            "styles": [
-              "apps/main/src/styles.css"
-            ],
+            "styles": ["apps/main/src/styles.css"],
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -82,9 +80,7 @@
               "apps/main/tsconfig.app.json",
               "apps/main/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -119,9 +115,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/main-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -146,9 +140,7 @@
               "libs/utils/tsconfig.lib.json",
               "libs/utils/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -181,9 +173,7 @@
               "libs/todo/tsconfig.lib.json",
               "libs/todo/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -192,6 +182,60 @@
             "jestConfig": "libs/todo/jest.config.js",
             "tsConfig": "libs/todo/tsconfig.spec.json",
             "setupFile": "libs/todo/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "log": {
+      "root": "libs/log",
+      "sourceRoot": "libs/log/src",
+      "projectType": "library",
+      "prefix": "rc",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/log/tsconfig.lib.json",
+              "libs/log/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/log/jest.config.js",
+            "tsConfig": "libs/log/tsconfig.spec.json",
+            "setupFile": "libs/log/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {}
+    },
+    "store": {
+      "root": "libs/store",
+      "sourceRoot": "libs/store/src",
+      "projectType": "library",
+      "prefix": "reactive-components",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/store/tsconfig.lib.json",
+              "libs/store/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/store/jest.config.js",
+            "tsConfig": "libs/store/tsconfig.spec.json",
+            "setupFile": "libs/store/src/test-setup.ts"
           }
         }
       },

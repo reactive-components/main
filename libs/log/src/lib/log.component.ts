@@ -1,13 +1,14 @@
 import {
   Component,
+  OnInit,
   ViewEncapsulation,
   ChangeDetectionStrategy
-} from '@angular/core';
+} from '@angular/core'
 
 @Component({
-  selector: 'rc-todo',
+  selector: 'rc-log',
   template: `
-    <todo-component>loading todo...</todo-component>
+    <log-component items="5">loading log...</log-component>
   `,
   styles: [
     `
@@ -15,7 +16,7 @@ import {
         font-family: monospace;
       }
 
-      todo-component {
+      log-component {
         width: 100%;
       }
     `
@@ -23,4 +24,6 @@ import {
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodoComponent {}
+export class LogComponent implements OnInit {
+  ngOnInit() {}
+}

@@ -1,10 +1,8 @@
-import { TodoState } from '../store/store';
-import { ActionsUnion, HideLogItem } from '../store/actions';
-import { getLog } from '../store/selectors';
 import { Action, createSelector } from '@reactive-redux/store';
 import { logCss } from './logcss';
 import { html } from 'lit-html';
 import { BaseStore, ReactiveComponent, formatDate } from '@reactive-components/utils';
+import { TodoState, ActionsUnion, HideLogItem, getLog } from '@reactive-components/store';
 
 export abstract class LogComponent<S, A extends Action> extends ReactiveComponent<
   S,
@@ -25,6 +23,7 @@ export abstract class LogComponent<S, A extends Action> extends ReactiveComponen
           <p>
             ${item.action.type} ${item.action.payload ? 'with' : ''}
             ${JSON.stringify(item.action.payload)}
+            <br>
             <small>at ${formatDate(item.timestamp)}</small>
           </p>
         `;
@@ -33,13 +32,13 @@ export abstract class LogComponent<S, A extends Action> extends ReactiveComponen
   }
 }
 
-export function LogComponentFactory<State, ActionsUnion extends Action>(
-  store: BaseStore<State, ActionsUnion>,
+export function LogComponentFactory<State, AU extends Action>(
+  store: BaseStore<State, AU>,
   selectors: any[],
   styles: string[]
 ) {
-  return class extends LogComponent<State, ActionsUnion> {
-    store: BaseStore<State, ActionsUnion>;
+  return class extends LogComponent<State, AU> {
+    store: BaseStore<State, AU>;
     selectors: any[];
     styles: string[];
 
@@ -82,7 +81,7 @@ export function MyLogFactory(store) {
     }
 
     get itemsCount() {
-      return parseInt(this.getAttribute('items')) || Infinity;
+      return parseInt(this.getAttribute('items'), 10) || Infinity;
     }
 
     render(log) {
