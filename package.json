@@ -21,7 +21,7 @@
     "format": "./node_modules/.bin/nx format:write",
     "format:write": "./node_modules/.bin/nx format:write",
     "format:check": "./node_modules/.bin/nx format:check",
-    "update": "ng update @nrwl/schematics",
+    "update": "ng update @nrwl/workspace",
     "update:check": "ng update",
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
@@ -29,6 +29,7 @@
   },
   "private": true,
   "dependencies": {
+    "@nrwl/angular": "^8.2.0",
     "@angular/animations": "^8.1.1",
     "@angular/common": "^8.1.1",
     "@angular/compiler": "^8.1.1",
@@ -39,7 +40,6 @@
     "@angular/pwa": "^0.12.4",
     "@angular/router": "^8.1.1",
     "@angular/service-worker": "^8.1.1",
-    "@nrwl/angular": "^8.2.0",
     "@nrwl/workspace": "^8.2.0",
     "@reactive-redux/store": "^5.1.2",
     "core-js": "^2.5.4",
@@ -54,8 +54,8 @@
     "@angular/cli": "8.1.1",
     "@angular/compiler-cli": "~8.1.1",
     "@angular/language-service": "^8.1.1",
-    "@nrwl/builders": "7.8.5",
-    "@nrwl/schematics": "7.8.5",
+    "@nrwl/jest": "8.0.0",
+    "@nrwl/workspace": "8.0.0",
     "@types/jest": "24.0.9",
     "@types/jquery": "3.3.6",
     "@types/node": "~8.9.4",
@@ -72,6 +72,7 @@
     "tsickle": ">=0.34.0",
     "tslib": "^1.10.0",
     "tslint": "~5.11.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "webpack": "^4.35.3"
   }
 }

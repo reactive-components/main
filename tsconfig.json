@@ -20,7 +20,8 @@
       "@reactive-components/todo": ["libs/todo/src/index.ts"],
       "@reactive-components/log": ["libs/log/src/index.ts"],
       "@reactive-components/store": ["libs/store/src/index.ts"]
-    }
+    },
+    "rootDir": "."
   },
   "exclude": ["node_modules", "tmp"]
 }

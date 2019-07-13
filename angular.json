@@ -84,7 +84,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/builders:jest",
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/main/jest.config.js",
             "tsConfig": "apps/main/tsconfig.spec.json",
@@ -117,7 +117,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/builders:jest",
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/utils/jest.config.js",
             "tsConfig": "libs/utils/tsconfig.spec.json"
@@ -150,7 +150,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/builders:jest",
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/todo/jest.config.js",
             "tsConfig": "libs/todo/tsconfig.spec.json",
@@ -177,7 +177,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/builders:jest",
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/log/jest.config.js",
             "tsConfig": "libs/log/tsconfig.spec.json",
@@ -204,7 +204,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/builders:jest",
+          "builder": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "libs/store/jest.config.js",
             "tsConfig": "libs/store/tsconfig.spec.json",
@@ -220,7 +220,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics"
+    "defaultCollection": "@nrwl/angular"
   },
   "schematics": {},
   "defaultProject": "main"
