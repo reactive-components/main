@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TodoComponent } from './todo.component';
+import { StoreModule } from '@reactive-components/store';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TodoComponent', () => {
   let component: TodoComponent;
@@ -8,7 +10,9 @@ describe('TodoComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodoComponent ]
+      declarations: [ TodoComponent ],
+      imports: [StoreModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));

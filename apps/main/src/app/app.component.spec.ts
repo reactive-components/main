@@ -1,11 +1,13 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TodoModule } from '@reactive-components/todo';
+import { LogModule } from '@reactive-components/log';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, TodoModule, LogModule],
       declarations: [AppComponent]
     }).compileComponents();
   }));

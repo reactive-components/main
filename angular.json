@@ -93,33 +93,6 @@
         }
       }
     },
-    "main-e2e": {
-      "root": "apps/main-e2e",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/builders:cypress",
-          "options": {
-            "cypressConfig": "apps/main-e2e/cypress.json",
-            "tsConfig": "apps/main-e2e/tsconfig.e2e.json",
-            "devServerTarget": "main:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "main:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/main-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
-        }
-      }
-    },
     "utils": {
       "root": "libs/utils",
       "sourceRoot": "libs/utils/src",
