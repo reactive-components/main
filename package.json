@@ -30,7 +30,6 @@
   },
   "private": true,
   "dependencies": {
-    "@nrwl/angular": "^8.2.0",
     "@angular/animations": "^8.1.1",
     "@angular/common": "^8.1.1",
     "@angular/compiler": "^8.1.1",
@@ -41,12 +40,13 @@
     "@angular/pwa": "^0.12.4",
     "@angular/router": "^8.1.1",
     "@angular/service-worker": "^8.1.1",
+    "@nrwl/angular": "^8.2.0",
     "@nrwl/workspace": "^8.2.0",
-    "@reactive-redux/store": "^5.1.2",
+    "@reactive-redux/store": "file:../@reactive-redux/store",
     "core-js": "^2.5.4",
     "immer": "^3.1.1",
     "lit-html": "^1.0.0",
-    "rxjs": "6.5.2",
+    "rxjs": "^6.5.2",
     "zone.js": "^0.9.1"
   },
   "devDependencies": {

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoStore } from './store';
+import { TodoStore } from './todo';
+import { MainStore } from './main.store';
 
 @NgModule({
   imports: [CommonModule],
-  providers: [TodoStore]
+  providers: [MainStore, TodoStore]
 })
 export class StoreModule {}

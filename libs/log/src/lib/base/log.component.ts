@@ -1,46 +1,64 @@
 import { Action, createSelector } from '@reactive-redux/store';
 import { logCss } from './logcss';
 import { html } from 'lit-html';
-import { BaseStore, ReactiveComponent, formatDate } from '@reactive-components/utils';
-import { TodoState, ActionsUnion, HideLogItem, getLog } from '@reactive-components/store';
+import {
+  BaseStore,
+  ReactiveComponent,
+  formatDate
+} from '@reactive-components/utils';
+import {
+  TodoState,
+  getLog,
+  hideLogItem
+} from '@reactive-components/store';
 
-export abstract class LogComponent<S, A extends Action> extends ReactiveComponent<
+export interface LogItem {
+  action: Action & { payload: any };
+  visible: boolean;
+  timestamp: number;
+}
+
+export abstract class LogComponent<
   S,
-  A
-> {
-  abstract store: BaseStore<S, A>;
-  abstract selectors;
-  abstract styles;
+  A extends Action = any
+> extends ReactiveComponent<S, A> {
+  abstract readonly store: BaseStore<S>;
+  abstract readonly selectors;
+  abstract readonly styles;
 
-  render([log]) {
+  render([log]: [LogItem[]]) {
     return html`
-      ${log.map(item => {
-        const hideAction = new HideLogItem({ timestamp: item.timestamp });
+      ${log
+        .map(item => {
+          const hideAction: any = hideLogItem({
+            timestamp: item.timestamp
+          });
 
-        if (item.action.type === hideAction.type) return html``;
+          if (!item.visible || item.action.type === hideAction.type) return;
 
-        return html`
-          <p>
-            ${item.action.type} ${item.action.payload ? 'with' : ''}
-            ${JSON.stringify(item.action.payload)}
-            <br>
-            <small>at ${formatDate(item.timestamp)}</small>
-          </p>
-        `;
-      })}
+          return html`
+            <p @click="${() => this.store.dispatch(hideAction)}">
+              ${item.action.type} ${item.action.payload ? 'with' : ''}
+              ${JSON.stringify(item.action.payload)}
+              <br />
+              <small>at ${formatDate(item.timestamp)}</small>
+            </p>
+          `;
+        })
+        .filter(l => !!l)}
     `;
   }
 }
 
-export function LogComponentFactory<State, AU extends Action>(
-  store: BaseStore<State, AU>,
+export function LogComponentFactory<State>(
+  store: BaseStore<State>,
   selectors: any[],
   styles: string[]
 ) {
-  return class extends LogComponent<State, AU> {
-    store: BaseStore<State, AU>;
-    selectors: any[];
-    styles: string[];
+  return class extends LogComponent<State> {
+    readonly store: BaseStore<State>;
+    readonly selectors: any[];
+    readonly styles: string[];
 
     constructor() {
       super();
@@ -51,23 +69,11 @@ export function LogComponentFactory<State, AU extends Action>(
   };
 }
 
-export function MyLogFactory(store) {
-  return class MyLastLogComponent extends LogComponentFactory<TodoState, ActionsUnion>(
-    store,
-    [getLog],
-    logCss
-  ) {
-    styles = [
-      ...this.styles,
-      `
-      :host {
-        background-color: #9836187a;
-        padding: 10px;
-      }
-      `
-    ];
-
-    selectors = this.getSelectors(this.itemsCount);
+export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
+  return class MyLastLogComponent extends LogComponentFactory<
+    TodoState
+  >(store, selectors, styles) {
+    public selectors = this.getSelectors(this.itemsCount);
 
     static get observedAttributes() {
       return ['items'];

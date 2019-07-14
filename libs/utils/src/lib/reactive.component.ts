@@ -1,15 +1,16 @@
 import { Store, Action, select } from '@reactive-redux/store';
-import { from, combineLatest, BehaviorSubject } from 'rxjs';
-import { delay, switchMap } from 'rxjs/operators';
+import { from, combineLatest, BehaviorSubject, Subject } from 'rxjs';
+import { delay, switchMap, tap, takeUntil } from 'rxjs/operators';
 import { render, TemplateResult } from 'lit-html';
 
 export abstract class ReactiveComponent<
   State,
-  ActionsUnion extends Action
+  ActionsUnion extends Action = any
 > extends HTMLElement {
   private triggerSubject = new BehaviorSubject(true);
   private containerRef: HTMLDivElement;
   private slotRef: HTMLSlotElement;
+  private destroy$ = new Subject<boolean>();
   public contentId: string;
 
   abstract readonly store: Store<State, ActionsUnion> = new Store();
@@ -33,17 +34,24 @@ export abstract class ReactiveComponent<
   }
 
   connectedCallback(timeout: number = 0) {
+    const attachCSS = () => from(this.attachCSS());
+
     this.triggerSubject
       .pipe(
-        switchMap(() => from(this.attachCSS())),
+        switchMap(attachCSS),
         delay(timeout),
         switchMap(() =>
           combineLatest(
             this.selectors.map(selector => this.store.state$.pipe(select(selector)))
           )
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe(this.__render.bind(this));
+  }
+
+  disconnectedCallback() {
+    this.destroy$.next(true);
   }
 
   triggerRender() {

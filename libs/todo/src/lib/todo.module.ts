@@ -9,8 +9,7 @@ import { MyTodoFactory } from './base/todo.component';
   declarations: [TodoComponent],
   imports: [BrowserModule, CommonModule, StoreModule],
   exports: [TodoComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [TodoComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TodoModule {
   constructor(private store: TodoStore) {

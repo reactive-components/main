@@ -1,9 +1,8 @@
 import { produce } from 'immer';
 import { reduceNS } from '@reactive-redux/store';
-import { ActionsUnion } from './actions';
-import { TodoState } from './store';
+import { TodoState } from './interfaces';
 
-export const history = reduceNS<TodoState, ActionsUnion>((state, action) =>
+export const history = reduceNS<TodoState, any>((state, action) =>
   produce(state, draft => {
     const timestamp = new Date().getTime();
 

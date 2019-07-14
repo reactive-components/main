@@ -1,5 +1,5 @@
 import { createSelector } from '@reactive-redux/store';
-import { TodoState, ITodo, ILogItem, FilterTypes } from './store';
+import { TodoState, ITodo, ILogItem, FilterTypes } from './interfaces';
 
 export const getFilter = createSelector<TodoState, FilterTypes, FilterTypes>(state => state.filter, filter => filter);
 

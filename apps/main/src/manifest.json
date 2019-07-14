@@ -1,7 +1,7 @@
 {
-  "name": "main",
-  "short_name": "main",
-  "theme_color": "#1976d2",
+  "name": "Reactive Components",
+  "short_name": "reactive components",
+  "theme_color": "#f4f4f4",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",

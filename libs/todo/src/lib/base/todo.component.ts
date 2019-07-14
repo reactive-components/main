@@ -1,25 +1,24 @@
 import {
-  AddTodo,
-  RemoveTodo,
-  ActionsUnion,
-  ClearCompleted,
-  ToggleAllCompleted,
-  ToggleCompleted,
-  SetFilter,
   getFilteredTodos,
   getFilter,
   TodoState,
-  ITodo
+  ITodo,
+  addTodo,
+  toggleAllCompleted,
+  toggleCompleted,
+  hideLogItem,
+  clearCompleted,
+  setFilter,
+  removeTodo
 } from '@reactive-components/store';
 import { todoCss } from './todocss';
-import { Action } from '@reactive-redux/store';
 import { html } from 'lit-html';
 import { BaseStore, ReactiveComponent } from '@reactive-components/utils';
 
-export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
-  abstract store: BaseStore<S, ActionsUnion>;
-  abstract selectors;
-  abstract styles;
+export abstract class TodoComponent<S> extends ReactiveComponent<S> {
+  abstract readonly store: BaseStore<S>;
+  abstract readonly selectors;
+  abstract readonly styles;
 
   render([todos, filter]) {
     return html`
@@ -31,12 +30,13 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
             class="new-todo"
             placeholder="What needs to be done?"
             autofocus
+            aria-label="Todo input field"
           />
         </header>
         <section class="main">
           <input
             @click=${() => {
-              this.store.dispatch(new ToggleAllCompleted());
+              this.store.dispatch(toggleAllCompleted());
             }}
             id="toggle-all"
             class="toggle-all"
@@ -59,7 +59,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
               <a
                 @click=${() =>
                   filter !== 'all'
-                    ? this.store.dispatch(new SetFilter('all'))
+                    ? this.store.dispatch(setFilter({ filter: 'all' }))
                     : null}
                 class="${filter === 'all' ? 'selected' : ''}"
                 href="#/"
@@ -71,7 +71,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
               <a
                 @click=${() =>
                   filter !== 'active'
-                    ? this.store.dispatch(new SetFilter('active'))
+                    ? this.store.dispatch(setFilter({ filter: 'active' }))
                     : null}
                 href="#/active"
                 class="${filter === 'active' ? 'selected' : ''}"
@@ -83,7 +83,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
               <a
                 @click=${() =>
                   filter !== 'completed'
-                    ? this.store.dispatch(new SetFilter('completed'))
+                    ? this.store.dispatch(setFilter({ filter: 'completed' }))
                     : null}
                 href="#/completed"
                 class="${filter === 'completed' ? 'selected' : ''}"
@@ -96,7 +96,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
             ? html`
                 <button
                   @click=${() => {
-                    this.store.dispatch(new ClearCompleted());
+                    this.store.dispatch(clearCompleted());
                   }}
                   class="clear-completed"
                 >
@@ -117,12 +117,13 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
             <div class="view">
               <input
                 @click=${event => {
-                  this.store.dispatch(new ToggleCompleted({ id: todo.id }));
+                  this.store.dispatch(toggleCompleted({ id: todo.id }));
                 }}
                 id="todo-${index}"
                 class="toggle"
                 type="checkbox"
                 ?checked=${todo.completed}
+                aria-label="todo checked toggle"
               />
 
               <label
@@ -133,7 +134,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
               </label>
               <button
                 @click=${() =>
-                  this.store.dispatch(new RemoveTodo({ id: todo.id }))}
+                  this.store.dispatch(removeTodo({ id: todo.id }))}
                 class="destroy"
               ></button>
             </div>
@@ -146,20 +147,20 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S, any> {
     const input: any = this.shadowRoot.querySelector('.new-todo');
 
     if (event.keyCode === 13 && !!input.value) {
-      this.store.dispatch(new AddTodo({ text: input.value }));
+      this.store.dispatch(addTodo({ text: input.value }));
 
       input.value = '';
     }
   }
 }
 
-export function TodoComponentFactory<State, AU extends Action>(
-  store: BaseStore<State, AU>,
+export function TodoComponentFactory<State>(
+  store: BaseStore<State>,
   selectors: any[],
   styles: string[]
 ) {
   return class extends TodoComponent<State> {
-    readonly store: BaseStore<State, AU>;
+    readonly store: BaseStore<State>;
     readonly selectors: any[];
     readonly styles: string[];
 
@@ -172,10 +173,14 @@ export function TodoComponentFactory<State, AU extends Action>(
   };
 }
 
-export function MyTodoFactory(store) {
-  return TodoComponentFactory<TodoState, ActionsUnion>(
+export function MyTodoFactory(
+  store,
+  selectors = [getFilteredTodos, getFilter],
+  styles = [todoCss]
+) {
+  return TodoComponentFactory<TodoState>(
     store,
-    [getFilteredTodos, getFilter],
-    [todoCss]
+    selectors,
+    styles
   );
 }

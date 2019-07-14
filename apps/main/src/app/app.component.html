@@ -1,3 +1,13 @@
-<rc-todo></rc-todo>
-<input (change)="showLog = !showLog" type="checkbox" name="showLog" id="showLog">
-<rc-log *ngIf="showLog"></rc-log>
+<div class="wrap">
+  <todo-component></todo-component>
+</div>
+<div class="wrap">
+  <input
+    (change)="showLog = !showLog"
+    type="checkbox"
+    name="showLog"
+    id="showLog"
+  />
+  <label for="showLog">Show log</label>
+</div>
+<log-component [class.showLog]="showLog" items="3"></log-component>

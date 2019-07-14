@@ -8,8 +8,7 @@ import { MyLogFactory } from './base/log.component';
   imports: [CommonModule, StoreModule],
   declarations: [LogComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  exports: [LogComponent],
-  entryComponents: [LogComponent]
+  exports: [LogComponent]
 })
 export class LogModule {
   constructor(private store: TodoStore) {

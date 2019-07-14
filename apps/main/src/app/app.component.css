@@ -1,12 +1,35 @@
 :host {
   display: flex;
-  justify-content: center;
+  position: relative;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  background-color: #f4f4f4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.21'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
-rc-todo {
-  flex: 1;
+.wrap {
+  width: 600px;
+  margin: 0 auto;
+  background-color: rgba(244, 244, 244, 0.6);
+  padding: 20px;
 }
 
-rc-log {
-  flex: 0.5;
+label {
+  user-select: none;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+log-component {
+  position: absolute;
+  top: 130px;
+  right: 0;
+  width: 15%;
+  transform: translateX(150%);
+  transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+log-component.showLog {
+  transform: translateX(-10%);
 }

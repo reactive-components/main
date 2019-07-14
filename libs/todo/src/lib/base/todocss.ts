@@ -1,4 +1,8 @@
 export const todoCss = `
+* {
+  font-family: monospace;
+}
+
 :host {
   display: block;
   max-width: 600px;
@@ -30,7 +34,7 @@ button {
 
 .todoapp {
 	background: #fff;
-	margin: 130px 0 40px 0;
+	margin: 150px 0 40px 0;
 	position: relative;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
 	            0 25px 50px 0 rgba(0, 0, 0, 0.1);
@@ -61,10 +65,10 @@ button {
 	font-size: 100px;
 	font-weight: 100;
 	text-align: center;
-	color: rgba(175, 47, 47, 0.15);
 	-webkit-text-rendering: optimizeLegibility;
 	-moz-text-rendering: optimizeLegibility;
-	text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
+  color: rgb(80, 80, 80);
 }
 
 .new-todo,
@@ -103,7 +107,8 @@ button {
 	text-align: center;
 	border: none; /* Mobile Safari */
 	opacity: 0;
-	position: absolute;
+  position: absolute;
+  top: -20px;
 }
 
 .toggle-all + label {
@@ -114,7 +119,8 @@ button {
 	top: -52px;
 	left: -13px;
 	-webkit-transform: rotate(90deg);
-	transform: rotate(90deg);
+  transform: rotate(90deg);
+  cursor: pointer;
 }
 
 .toggle-all + label:before {
@@ -171,7 +177,8 @@ button {
 	margin: auto 0;
 	border: none; /* Mobile Safari */
 	-webkit-appearance: none;
-	appearance: none;
+  appearance: none;
+  cursor: pointer;
 }
 
 .todo-list li .toggle {
@@ -213,7 +220,8 @@ button {
 	font-size: 30px;
 	color: #cc9a9a;
 	margin-bottom: 11px;
-	transition: color 0.2s ease-out;
+  transition: color 0.2s ease-out;
+  cursor: pointer;
 }
 
 .todo-list li .destroy:hover {
@@ -237,7 +245,7 @@ button {
 }
 
 .footer {
-	color: #777;
+	color: #585858;
 	padding: 10px 15px;
 	height: 20px;
 	text-align: center;
@@ -358,7 +366,7 @@ html .clear-completed:active {
 	}
 }
     .todoapp h1 {
-      top: -210px !important;
+      top: -230px !important;
     }
 
     label {
