@@ -2,6 +2,11 @@
   "name": "reactive-components",
   "version": "0.0.0",
   "license": "MIT",
+  "author": {
+    "name": "Zdravko Tatarski",
+    "email": "zdravko.tatarski@gmail.com"
+  },
+  "homepage": "https://github.com/reactive-components/main",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -42,7 +47,7 @@
     "@angular/service-worker": "^8.1.1",
     "@nrwl/angular": "^8.2.0",
     "@nrwl/workspace": "^8.2.0",
-    "@reactive-redux/store": "file:../@reactive-redux/store",
+    "@reactive-redux/store": "^6.0.1",
     "core-js": "^2.5.4",
     "immer": "^3.1.1",
     "lit-html": "^1.0.0",
