@@ -31,7 +31,7 @@
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
-    "deploy": "cp ./onesignal-sdk/* ./dist/apps/main/ && firebase deploy --only hosting"
+    "deploy": "cp ./tools/onesignal-sdk/* ./dist/apps/main/ && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
