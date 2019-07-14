@@ -14,10 +14,22 @@
   </head>
   <body>
     <main>
-        <reactive-components-root></reactive-components-root>
+      <reactive-components-root></reactive-components-root>
     </main>
     <noscript
       >Please enable JavaScript to continue using this application.</noscript
     >
+    <script>
+      if (window.location.hostname === 'reactive-components.web.app') {
+        importScripts('https://cdn.onesignal.com/sdks/OneSignalSDK.js');
+
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+          OneSignal.init({
+            appId: '6ce16a6e-e744-4f68-b63f-8bfb8f271046'
+          });
+        });
+      }
+    </script>
   </body>
 </html>

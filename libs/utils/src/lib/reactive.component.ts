@@ -1,6 +1,6 @@
 import { Store, Action, select } from '@reactive-redux/store';
 import { from, combineLatest, BehaviorSubject, Subject } from 'rxjs';
-import { delay, switchMap, tap, takeUntil } from 'rxjs/operators';
+import { delay, switchMap, takeUntil } from 'rxjs/operators';
 import { render, TemplateResult } from 'lit-html';
 
 export abstract class ReactiveComponent<
@@ -17,7 +17,6 @@ export abstract class ReactiveComponent<
   abstract readonly selectors: any = [state => state];
   abstract readonly styles: string[] = [];
   abstract render(selectedState: any[]): TemplateResult | TemplateResult[];
-
 
   constructor() {
     super();
@@ -41,9 +40,11 @@ export abstract class ReactiveComponent<
         switchMap(attachCSS),
         delay(timeout),
         switchMap(() =>
-          combineLatest(
-            this.selectors.map(selector => this.store.state$.pipe(select(selector)))
-          )
+          combineLatest([
+            ...this.selectors.map(selector =>
+              this.store.state$.pipe(select(selector))
+            )
+          ])
         ),
         takeUntil(this.destroy$)
       )
@@ -92,5 +93,7 @@ export abstract class ReactiveComponent<
 }
 
 function getComponentId() {
-  return `reactive-component-${crypto.getRandomValues(new Uint8Array(8)).join('')}`;
+  return `reactive-component-${crypto
+    .getRandomValues(new Uint8Array(8))
+    .join('')}`;
 }

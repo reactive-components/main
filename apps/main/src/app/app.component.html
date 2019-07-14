@@ -1,13 +1,16 @@
-<div class="wrap">
-  <todo-component></todo-component>
+<div class="container" [@fadeIn]="true">
+  <div class="wrap">
+    <todo-component></todo-component>
+  </div>
+  <div class="wrap">
+    <input
+      [checked]="showLog"
+      (change)="showLog = !showLog"
+      type="checkbox"
+      name="showLog"
+      id="showLog"
+    />
+    <label for="showLog">Show log</label>
+  </div>
+  <log-component [class.showLog]="showLog" items="3"></log-component>
 </div>
-<div class="wrap">
-  <input
-    (change)="showLog = !showLog"
-    type="checkbox"
-    name="showLog"
-    id="showLog"
-  />
-  <label for="showLog">Show log</label>
-</div>
-<log-component [class.showLog]="showLog" items="3"></log-component>

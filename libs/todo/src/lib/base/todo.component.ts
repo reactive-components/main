@@ -6,7 +6,6 @@ import {
   addTodo,
   toggleAllCompleted,
   toggleCompleted,
-  hideLogItem,
   clearCompleted,
   setFilter,
   removeTodo
@@ -133,8 +132,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S> {
                 ${todo.text}
               </label>
               <button
-                @click=${() =>
-                  this.store.dispatch(removeTodo({ id: todo.id }))}
+                @click=${() => this.store.dispatch(removeTodo({ id: todo.id }))}
                 class="destroy"
               ></button>
             </div>
@@ -178,9 +176,5 @@ export function MyTodoFactory(
   selectors = [getFilteredTodos, getFilter],
   styles = [todoCss]
 ) {
-  return TodoComponentFactory<TodoState>(
-    store,
-    selectors,
-    styles
-  );
+  return TodoComponentFactory<TodoState>(store, selectors, styles);
 }
