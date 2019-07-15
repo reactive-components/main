@@ -1,5 +1,5 @@
 import { Action, action, fsa } from '@reactive-redux/store';
-import { FilterTypes } from './interfaces';
+import { FilterTypes, ITodo } from './interfaces';
 
 export enum TodoActions {
   ADD_TODO = '[Todo] Add Todo',
@@ -13,7 +13,7 @@ export enum TodoActions {
 
 const fsaID = fsa<{ id: string }>();
 
-export const addTodo = action(TodoActions.ADD_TODO, fsa<{ text: string }>());
+export const addTodo = action(TodoActions.ADD_TODO, fsa<ITodo>());
 export const removeTodo = action(TodoActions.REMOVE_TODO, fsaID);
 export const toggleCompleted = action(TodoActions.TOGGLE_COMPLETED, fsaID)
 export const toggleAllCompleted = action(TodoActions.TOGGLE_ALL_COMPLETED);

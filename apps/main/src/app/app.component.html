@@ -1,8 +1,8 @@
 <div class="container" [@fadeIn]="true">
   <div class="wrap">
-    <todo-component></todo-component>
+    <todo-component (*rc-events)="todoEvents$; $event = $event.detail"></todo-component>
   </div>
-  <div class="wrap">
+  <!-- <div class="wrap">
     <input
       [checked]="showLog"
       (change)="showLog = !showLog"
@@ -12,5 +12,5 @@
     />
     <label for="showLog">Show log</label>
   </div>
-  <log-component [class.showLog]="showLog" items="3"></log-component>
+  <log-component [class.showLog]="showLog" items="3"></log-component> -->
 </div>

@@ -21,9 +21,9 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S> {
 
   render([todos, filter]) {
     return html`
+      <h1>todos</h1>
       <section class="todoapp">
         <header class="header">
-          <h1>todos</h1>
           <input
             @keydown=${event => this.handleEnter(event)}
             class="new-todo"
@@ -50,7 +50,7 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S> {
         <footer class="footer">
           <span class="todo-count">
             <strong>${todos.filter(todo => !todo.completed).length}</strong>
-            item left
+            ${todos.filter(todo => !todo.completed).length === 1 ? 'item' : 'items'} left
           </span>
 
           <ul class="filters">
@@ -176,5 +176,5 @@ export function MyTodoFactory(
   selectors = [getFilteredTodos, getFilter],
   styles = [todoCss]
 ) {
-  return TodoComponentFactory<TodoState>(store, selectors, styles);
+  customElements.define('todo-component', TodoComponentFactory<TodoState>(store, selectors, styles));
 }

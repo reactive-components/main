@@ -11,7 +11,7 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:browser",
           "options": {
             "outputPath": "dist/apps/main",
             "index": "apps/main/src/index.html",
@@ -23,9 +23,13 @@
               "apps/main/src/assets",
               "apps/main/src/manifest.json"
             ],
-            "styles": ["apps/main/src/styles.css"],
+            "styles": [
+              "apps/main/src/styles.css"
+            ],
             "scripts": [],
-            "es5BrowserSupport": true
+            "es5BrowserSupport": true,
+            "extraWebpackConfig": "node_modules/@typebytes/ngx-template-streams/webpack/webpack.config.js",
+            "plugin": "~node_modules/@typebytes/ngx-template-streams/internal/plugin.js"
           },
           "configurations": {
             "production": {
@@ -57,9 +61,11 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
-            "browserTarget": "main:build"
+            "browserTarget": "main:build",
+            "extraWebpackConfig": "node_modules/@typebytes/ngx-template-streams/webpack/webpack.config.js",
+            "plugin": "~node_modules/@typebytes/ngx-template-streams/internal/plugin.js"
           },
           "configurations": {
             "production": {
@@ -80,15 +86,19 @@
               "apps/main/tsconfig.app.json",
               "apps/main/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "builder": "ngx-build-plus:karma",
           "options": {
             "jestConfig": "apps/main/jest.config.js",
             "tsConfig": "apps/main/tsconfig.spec.json",
-            "setupFile": "apps/main/src/test-setup.ts"
+            "setupFile": "apps/main/src/test-setup.ts",
+            "extraWebpackConfig": "node_modules/@typebytes/ngx-template-streams/webpack/webpack.config.js",
+            "plugin": "~node_modules/@typebytes/ngx-template-streams/internal/plugin.js"
           }
         }
       }
@@ -113,7 +123,9 @@
               "libs/utils/tsconfig.lib.json",
               "libs/utils/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -146,7 +158,9 @@
               "libs/todo/tsconfig.lib.json",
               "libs/todo/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -173,7 +187,9 @@
               "libs/log/tsconfig.lib.json",
               "libs/log/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -200,7 +216,9 @@
               "libs/store/tsconfig.lib.json",
               "libs/store/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {

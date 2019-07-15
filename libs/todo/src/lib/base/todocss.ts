@@ -34,7 +34,7 @@ button {
 
 .todoapp {
 	background: #fff;
-	margin: 150px 0 40px 0;
+	margin: 20px;
 	position: relative;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
 	            0 25px 50px 0 rgba(0, 0, 0, 0.1);
@@ -58,9 +58,7 @@ button {
 	color: #e6e6e6;
 }
 
-.todoapp h1 {
-	position: absolute;
-	top: -155px;
+h1 {
 	width: 100%;
 	font-size: 100px;
 	font-weight: 100;
@@ -69,6 +67,8 @@ button {
 	-moz-text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;
   color: rgb(80, 80, 80);
+  display:block;
+  margin: 0 auto;
 }
 
 .new-todo,
@@ -365,9 +365,6 @@ html .clear-completed:active {
 		bottom: 10px;
 	}
 }
-    .todoapp h1 {
-      top: -230px !important;
-    }
 
     label {
       user-select: none !important;

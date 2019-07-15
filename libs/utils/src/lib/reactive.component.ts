@@ -1,19 +1,57 @@
-import { Store, Action, select } from '@reactive-redux/store';
-import { from, combineLatest, BehaviorSubject, Subject } from 'rxjs';
-import { delay, switchMap, takeUntil } from 'rxjs/operators';
+import {
+  Action,
+  select,
+  fsa,
+  action,
+  guard,
+  Creator
+} from '@reactive-redux/store';
+import { from, combineLatest, Subject, of, Observable } from 'rxjs';
+import {
+  switchMap,
+  takeUntil,
+  startWith,
+  tap,
+  debounceTime,
+  share,
+  filter,
+  take
+} from 'rxjs/operators';
 import { render, TemplateResult } from 'lit-html';
+import { BaseStore } from './base.store';
+
+export const ACTION_PREFIX = '[Reactive component]';
+
+export enum ReactiveActions {
+  INIT = 'Init',
+  RENDER = 'Render',
+  DESTROY = 'Destroy',
+  CSS_READY = 'CSS ready'
+}
+
+export interface BaseAction {
+  component: HTMLElement;
+}
 
 export abstract class ReactiveComponent<
   State,
   ActionsUnion extends Action = any
 > extends HTMLElement {
-  private triggerSubject = new BehaviorSubject(true);
+  private triggerRender$ = new Subject();
   private containerRef: HTMLDivElement;
   private slotRef: HTMLSlotElement;
-  private destroy$ = new Subject<boolean>();
-  public contentId: string;
 
-  abstract readonly store: Store<State, ActionsUnion> = new Store();
+  private _events$ = new Subject<Action>();
+  public events$ = this._events$.pipe(share());
+
+  private baseActionMap = new Map([
+    [ReactiveActions.INIT, this.createAction(ReactiveActions.INIT)],
+    [ReactiveActions.RENDER, this.createAction(ReactiveActions.RENDER)],
+    [ReactiveActions.DESTROY, this.createAction(ReactiveActions.DESTROY)],
+    [ReactiveActions.CSS_READY, this.createAction(ReactiveActions.CSS_READY)]
+  ]);
+
+  abstract readonly store: BaseStore<State, ActionsUnion> = new BaseStore();
   abstract readonly selectors: any = [state => state];
   abstract readonly styles: string[] = [];
   abstract render(selectedState: any[]): TemplateResult | TemplateResult[];
@@ -27,39 +65,82 @@ export abstract class ReactiveComponent<
     this.shadowRoot.appendChild(this.slotRef);
 
     this.containerRef = document.createElement('div');
-    this.contentId = getComponentId();
-    this.containerRef.id = this.contentId;
     this.shadowRoot.appendChild(this.containerRef);
+
+    this.events$.pipe(takeUntil(this.onDestroy$)).subscribe(ev => {
+      this.dispatchEvent(
+        new CustomEvent('rc-events', {
+          detail: ev
+        })
+      );
+    });
   }
 
-  connectedCallback(timeout: number = 0) {
-    const attachCSS = () => from(this.attachCSS());
+  get onInit$() {
+    return this.events$.pipe(
+      filter(guard(this.baseActionMap.get(ReactiveActions.INIT)))
+    );
+  }
 
-    this.triggerSubject
+  get onDestroy$() {
+    return this.events$.pipe(
+      filter(guard(this.baseActionMap.get(ReactiveActions.DESTROY)))
+    );
+  }
+
+  get onRender$() {
+    return this.events$.pipe(
+      filter(guard(this.baseActionMap.get(ReactiveActions.RENDER)))
+    );
+  }
+
+  connectedCallback(timeout$: Observable<any> = of(0)) {
+    this.emit(this.baseActionMap.get(ReactiveActions.INIT)());
+
+    const attachCSS$ = () =>
+      from(this.attachCSS()).pipe(
+        tap(() =>
+          this.emit(this.baseActionMap.get(ReactiveActions.CSS_READY)())
+        )
+      );
+
+    const selectors$ = () =>
+      combineLatest([
+        ...this.selectors.map(selector =>
+          this.store.state$.pipe(select(selector))
+        )
+      ]);
+
+    timeout$
       .pipe(
-        switchMap(attachCSS),
-        delay(timeout),
-        switchMap(() =>
-          combineLatest([
-            ...this.selectors.map(selector =>
-              this.store.state$.pipe(select(selector))
-            )
-          ])
-        ),
-        takeUntil(this.destroy$)
+        take(1),
+        switchMap(() => this.triggerRender$.pipe(startWith(true))),
+        debounceTime(50),
+        switchMap(attachCSS$),
+        switchMap(selectors$),
+        takeUntil(this.onDestroy$),
+        tap(() => this.emit(this.baseActionMap.get(ReactiveActions.RENDER)()))
       )
       .subscribe(this.__render.bind(this));
   }
 
   disconnectedCallback() {
-    this.destroy$.next(true);
+    this.emit(this.baseActionMap.get(ReactiveActions.DESTROY)());
   }
 
   triggerRender() {
-    this.triggerSubject.next(true);
+    this.triggerRender$.next(true);
   }
 
-  attachCSS() {
+  emit(event) {
+    this._events$.next(event);
+  }
+
+  createAction<T = any>(type: string): Creator & { type: string } {
+    return action(`${ACTION_PREFIX} ${type}`, fsa<T>());
+  }
+
+  private attachCSS() {
     const addCss = (styleUrlOrCss: string) =>
       new Promise((resolve, reject) => {
         const isCSS = styleUrlOrCss.match(/^(#|\.)?[^{]+{/);
@@ -90,10 +171,4 @@ export abstract class ReactiveComponent<
 
     render(this.render.bind(this)(state), this.containerRef);
   }
-}
-
-function getComponentId() {
-  return `reactive-component-${crypto
-    .getRandomValues(new Uint8Array(8))
-    .join('')}`;
 }

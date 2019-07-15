@@ -10,80 +10,69 @@ import {
   toggleAllCompleted,
   toggleCompleted
 } from './actions';
-
-export const initialState: TodoState = {
-  todos: {
-    ['0']: { text: 'Buy a unicorn', id: '0', completed: true }
-  },
-  log: {
-    1: {
-      action: addTodo({ text: 'Buy a unicorn' }),
-      visible: true,
-      timestamp: 1
-    }
-  },
-  filter: 'all'
-};
+import { initialState } from './models';
 
 export const reducerFn = reducer<TodoState>(
   initialState,
-  on(addTodo, (state, { payload }) => {
-    const { text } = payload;
+  on(addTodo, (state, { payload }) =>
+    produce(state, draft => {
+      const { text, completed } = payload;
 
-    return produce(state, draft => {
       const id = crypto.getRandomValues(new Uint8Array(8)).join('');
       draft.todos[id] = {
         id,
         text,
-        completed: false
+        completed: !!completed
       };
-    });
-  }),
-  on(removeTodo, (state: TodoState, { payload }) => {
-    const { id } = payload;
+    })
+  ),
+  on(removeTodo, (state: TodoState, { payload }) =>
+    produce(state, draft => {
+      const { id } = payload;
 
-    return produce(state, draft => {
       delete draft.todos[id];
-    });
-  }),
-  on(toggleCompleted, (state: TodoState, { payload }) => {
-    const { id } = payload;
+    })
+  ),
+  on(toggleCompleted, (state: TodoState, { payload }) =>
+    produce(state, draft => {
+      const { id } = payload;
 
-    return produce(state, draft => {
+      if (!state.todos[id]) return;
+
       draft.todos[id].completed = !state.todos[id].completed;
-    });
-  }),
-  on(toggleAllCompleted, state => {
-    return produce(state, draft => {
+    })
+  ),
+  on(toggleAllCompleted, state =>
+    produce(state, draft => {
       const todos = Object.keys(draft.todos).map(key => draft.todos[key]);
       const hasTodo = todos.some(todo => !todo.completed);
 
       todos.forEach(todo => {
         todo.completed = hasTodo;
       });
-    });
-  }),
-  on(clearCompleted, state => {
-    return produce(state, draft => {
+    })
+  ),
+  on(clearCompleted, state =>
+    produce(state, draft => {
       Object.keys(draft.todos).forEach(key => {
         if (draft.todos[key].completed) {
           delete draft.todos[key];
         }
       });
-    });
-  }),
-  on(setFilter, (state, { payload }) => {
-    const { filter } = payload;
+    })
+  ),
+  on(setFilter, (state, { payload }) =>
+    produce(state, draft => {
+      const { filter } = payload;
 
-    return produce(state, draft => {
       draft.filter = filter;
-    });
-  }),
-  on(hideLogItem, (state, { payload }) => {
-    const { timestamp } = payload;
+    })
+  ),
+  on(hideLogItem, (state, { payload }) =>
+    produce(state, draft => {
+      const { timestamp } = payload;
 
-    return produce(state, draft => {
       draft.log[timestamp].visible = false;
-    });
-  })
+    })
+  )
 );

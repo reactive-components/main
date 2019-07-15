@@ -12,6 +12,6 @@ import { MyLogFactory } from './base/log.component';
 })
 export class LogModule {
   constructor(private store: TodoStore) {
-    customElements.define('log-component', MyLogFactory(this.store));
+    // customElements.define('log-component', MyLogFactory(this.store));
   }
 }

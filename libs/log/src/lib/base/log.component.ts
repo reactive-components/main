@@ -34,7 +34,7 @@ export abstract class LogComponent<
             timestamp: item.timestamp
           });
 
-          if (!item.visible || item.action.type === hideAction.type) return;
+          if (!item.visible) return;
 
           return html`
             <p @click="${() => this.store.dispatch(hideAction)}">
@@ -70,7 +70,7 @@ export function LogComponentFactory<State>(
 }
 
 export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
-  return class MyLastLogComponent extends LogComponentFactory<
+  class MyLastLogComponent extends LogComponentFactory<
     TodoState
   >(store, selectors, styles) {
     public selectors = this.getSelectors(this.itemsCount);
@@ -121,4 +121,6 @@ export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
       ];
     }
   };
+
+  customElements.define('log-component', MyLastLogComponent);
 }

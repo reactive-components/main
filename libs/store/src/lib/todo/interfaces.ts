@@ -3,9 +3,9 @@ import { Action } from '@reactive-redux/store';
 export type FilterTypes = 'all' | 'active' | 'completed';
 
 export interface ITodo {
-  id: string;
+  id?: string;
   text: string;
-  completed: boolean;
+  completed?: boolean;
 }
 
 export interface ILogItem {

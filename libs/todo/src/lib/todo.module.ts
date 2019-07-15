@@ -13,6 +13,6 @@ import { MyTodoFactory } from './base/todo.component';
 })
 export class TodoModule {
   constructor(private store: TodoStore) {
-    customElements.define('todo-component', MyTodoFactory(this.store));
+    // customElements.define('todo-component', MyTodoFactory(this.store));
   }
 }
