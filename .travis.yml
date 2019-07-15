@@ -4,3 +4,8 @@ node_js:
 cache:
   directories:
     - "node_modules"
+deploy:
+  provider: firebase
+  token:
+    secure: "CzyYqe+DSeRKsWes6DZBnDDJzHhtv/M4VdmPryY/0lhQxp5uoGcR3tcSJ855EqMcM9kPiQ8Dd8NptmxnP3t1crcoWcmn9T/5QvtSTTZqd1vppzWk0tC6b4sxl2PjaY/SpAk5XhOgEOcFQHYAD1Orhc7HKskrBJ4iksh743WQ1huljGZmFTn9YdI4po42tWtzfPSbi+RJFPkwn07K6U2cFeiRqB1QuAcFBsnp5wtzfJP2UWW9dlcV+svyWgJW6CNBIHAdYmw8CF7ep3F9pvRVJgKZ5+BT48pU9eYhJkpKVmzE0j5kaYRSZTnXmwOOALHfsylf+UO20Z0679/ExKB2Hjj3sSV7mtna+LW0CAsC0+mSyhfSGm4ZME3SlYAuz7rIQKVWXTkl2Eca66RePyW3//CQAo041L8k1PvuhRpCCEVRYGBHeT8WKMYY5qk5mek2xNRB575RmHfGD8IIJGQeytIWBoxvS7ZHJ6iBIZPI3zZ6/B+kTvd+o7rHJcjGDzcP6YhctcZx8Z3H3bmro0l3qSfPIAoKNLwS2vMOFP9JwCOIWp2mOf4qwDDT7A2UD2Ngsz4Z4+WGL6u3Df+Ve+yA3/kKQyCAPjKsJ/i2vCq8YQT6kzrr1Q5sHrx4TxGreFRXND9m8JuzjGziP06GHqJw8OdmWW+o1fWkN0jJbefYxxc="
+before_deploy: "ng build --prod --aot && cp ./tools/onesignal-sdk/* ./dist/apps/main/"

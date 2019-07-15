@@ -1,5 +1,8 @@
 # Reactive Components
 
+![alt text](https://travis-ci.org/reactive-components/main.svg?branch=master "Build status")
+
+
 
 ## Development server
 
