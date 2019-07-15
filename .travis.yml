@@ -1,11 +1,12 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
 cache:
   directories:
-    - "node_modules"
+  - node_modules
 deploy:
   provider: firebase
-  token:
-    secure: "CzyYqe+DSeRKsWes6DZBnDDJzHhtv/M4VdmPryY/0lhQxp5uoGcR3tcSJ855EqMcM9kPiQ8Dd8NptmxnP3t1crcoWcmn9T/5QvtSTTZqd1vppzWk0tC6b4sxl2PjaY/SpAk5XhOgEOcFQHYAD1Orhc7HKskrBJ4iksh743WQ1huljGZmFTn9YdI4po42tWtzfPSbi+RJFPkwn07K6U2cFeiRqB1QuAcFBsnp5wtzfJP2UWW9dlcV+svyWgJW6CNBIHAdYmw8CF7ep3F9pvRVJgKZ5+BT48pU9eYhJkpKVmzE0j5kaYRSZTnXmwOOALHfsylf+UO20Z0679/ExKB2Hjj3sSV7mtna+LW0CAsC0+mSyhfSGm4ZME3SlYAuz7rIQKVWXTkl2Eca66RePyW3//CQAo041L8k1PvuhRpCCEVRYGBHeT8WKMYY5qk5mek2xNRB575RmHfGD8IIJGQeytIWBoxvS7ZHJ6iBIZPI3zZ6/B+kTvd+o7rHJcjGDzcP6YhctcZx8Z3H3bmro0l3qSfPIAoKNLwS2vMOFP9JwCOIWp2mOf4qwDDT7A2UD2Ngsz4Z4+WGL6u3Df+Ve+yA3/kKQyCAPjKsJ/i2vCq8YQT6kzrr1Q5sHrx4TxGreFRXND9m8JuzjGziP06GHqJw8OdmWW+o1fWkN0jJbefYxxc="
-before_deploy: "ng build --prod --aot && cp ./tools/onesignal-sdk/* ./dist/apps/main/"
+before_deploy: cp ./tools/onesignal-sdk/* ./dist/apps/main/
+env:
+  global:
+    secure: DgTo6WtrCz/MI1AHXl/a4gEt7ErAolEUuQ50ZnEqNGOLbfiYLoIv+/n4n8SVkx3q7nng2CD+/tzMcok9bQV0fh9HbFNfdWi8+PYWR2OzzT/HgoOES0RMiTJP4k9ngxVqM4WaXwhxupEEjetaYY7JiODd6Wx/sQQ3gLStTg7aGDrP3CoQgSF5+m6AQm1SlgfEIMcWzR4hP3gt7bp9fKPPCMtZqQQ/hvrMtAHi0hiqY+fo2+N40SPAkRR7pqZeVuo6ekfbsADfnbq9qDlmM8SIVO49h5tdbTnycLKNbinfkXHfh/EgGD9UEnMh46YU6qxEOE/Y6x2YnhGBd9REhx5+/qIBvtrXd3o0CXu/lKJmwQxxqmtxHpXfScKQcYXaxiZDwV4vG6PzCwmiq03pQJZ0T7kJC8Wc3UkO7UlXHeSg2yRE9E5c9wHm4uw8tmZtlpTSllF4WWYf7MjVp0QMF63XXpA/W1mwDwjZ/Y1CikGvKGCmT9j2nZ4CItBa55keIEp+yUdNK85m7ep+qd8uXi2lc8VQmUPi2ocC1njx8RWw4tkXoLdM/LnF6Ew6Nk8TfQFnswMbOiFidk0dIivnFop962fGvubIkKp6n/BLtB7XD19UC3EYoPtDdBe21N1Aq9a5Q05j9+YvBAyG2+4vjk4QkRZcRVCjnBe+gFzyaO1yILI=
