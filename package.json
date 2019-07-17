@@ -31,7 +31,8 @@
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
-    "deploy": "cp ./tools/onesignal-sdk/* ./dist/apps/main/ && firebase deploy --only hosting"
+    "deploy": "cp ./tools/onesignal-sdk/* ./dist/apps/main/ && firebase deploy --only hosting",
+    "source-explorer": "./node_modules/.bin/source-map-explorer ./dist/apps/main/main.*.js"
   },
   "private": true,
   "dependencies": {
@@ -72,14 +73,15 @@
     "jest-preset-angular": "^7.1.1",
     "majestic": "^1.6.0",
     "ng-packagr": "^5.3.0",
+    "ngx-build-plus": "^8.0.3",
     "prettier": "1.16.4",
+    "source-map-explorer": "^2.0.1",
     "ts-jest": "24.0.0",
     "ts-node": "~7.0.0",
     "tsickle": ">=0.34.0",
     "tslib": "^1.10.0",
     "tslint": "~5.11.0",
     "typescript": "^3.4.5",
-    "webpack": "^4.35.3",
-    "ngx-build-plus": "^8.0.3"
+    "webpack": "^4.35.3"
   }
 }
