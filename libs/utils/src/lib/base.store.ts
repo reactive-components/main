@@ -6,34 +6,28 @@ export class BaseStore<State, Actions extends Action = any> extends Store<
   State,
   Actions
 > {
-  static readonly actionSubject = new Subject<any>();
-  static readonly destroySubject = new Subject<boolean>();
-
   constructor(
     public baseConfig: {
-      initialState?: State;
-      reducer?: Reducer<State>;
-      transducers?: TransducerFn<State, any>[];
-    } = {
-      initialState: {} as State,
-      reducer: reducer<State>({} as any),
-      transducers: []
-    }
-  ) {
+      initialState: State;
+      reducer: Reducer<State>;
+      transducers: TransducerFn<State, any>[];
+      actionSubject: Subject<any>;
+      destroySubject: Subject<any>;
+    }) {
     super({
-      actionStream$: BaseStore.actionSubject.asObservable(),
-      destroy$: BaseStore.destroySubject.asObservable(),
+      actionStream$: baseConfig.actionSubject.asObservable(),
+      destroy$: baseConfig.destroySubject.asObservable(),
       initialState$: of(baseConfig.initialState),
       reducer$: of(baseConfig.reducer),
       transducers$: of(baseConfig.transducers || [])
     });
   }
 
-  dispatch(action) {
-    BaseStore.actionSubject.next(action);
+  dispatch(action: Actions) {
+    this.baseConfig.actionSubject.next(action);
   }
 
   destroy() {
-    BaseStore.destroySubject.next(true);
+    this.baseConfig.destroySubject.next(true);
   }
 }

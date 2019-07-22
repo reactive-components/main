@@ -26,7 +26,7 @@ import { MyLogFactory } from '@reactive-components/log';
 })
 export class AppModule {
   constructor(private todoStore: TodoStore) {
-    MyTodoFactory(todoStore);
+    MyTodoFactory(todoStore)
     MyLogFactory(todoStore);
   }
 }

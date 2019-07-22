@@ -20,8 +20,6 @@ import {
 import { render, TemplateResult } from 'lit-html';
 import { BaseStore } from './base.store';
 
-export const ACTION_PREFIX = '[Reactive component]';
-
 export enum ReactiveActions {
   INIT = 'Init',
   RENDER = 'Render',
@@ -42,7 +40,6 @@ export abstract class ReactiveComponent<
   private slotRef: HTMLSlotElement;
 
   private _events$ = new Subject<Action>();
-  public events$ = this._events$.pipe(share());
 
   private baseActionMap = new Map([
     [ReactiveActions.INIT, this.createAction(ReactiveActions.INIT)],
@@ -51,7 +48,7 @@ export abstract class ReactiveComponent<
     [ReactiveActions.CSS_READY, this.createAction(ReactiveActions.CSS_READY)]
   ]);
 
-  abstract readonly store: BaseStore<State, ActionsUnion> = new BaseStore();
+  abstract readonly store: BaseStore<State, ActionsUnion>;
   abstract readonly selectors: any = [state => state];
   abstract readonly styles: string[] = [];
   abstract render(selectedState: any[]): TemplateResult | TemplateResult[];
@@ -67,13 +64,30 @@ export abstract class ReactiveComponent<
     this.containerRef = document.createElement('div');
     this.shadowRoot.appendChild(this.containerRef);
 
-    this.events$.pipe(takeUntil(this.onDestroy$)).subscribe(ev => {
+    this.events$.pipe(takeUntil(this.onDestroy$)).subscribe(event => {
       this.dispatchEvent(
         new CustomEvent('rc-events', {
-          detail: ev
+          detail: {
+            event
+          }
         })
       );
     });
+
+   this.triggerRender$.pipe(
+     startWith(true),
+      debounceTime(50),
+      switchMap(this.attachCSS$),
+      switchMap(this.selectors$),
+      takeUntil(this.onDestroy$),
+      tap(payload =>
+        this.emit(this.baseActionMap.get(ReactiveActions.RENDER)(payload))
+      )
+    ).subscribe(this.__render.bind(this));
+  }
+
+  get events$() {
+    return this._events$.pipe(share());
   }
 
   get onInit$() {
@@ -94,34 +108,8 @@ export abstract class ReactiveComponent<
     );
   }
 
-  connectedCallback(timeout$: Observable<any> = of(0)) {
+  connectedCallback() {
     this.emit(this.baseActionMap.get(ReactiveActions.INIT)());
-
-    const attachCSS$ = () =>
-      from(this.attachCSS()).pipe(
-        tap(() =>
-          this.emit(this.baseActionMap.get(ReactiveActions.CSS_READY)())
-        )
-      );
-
-    const selectors$ = () =>
-      combineLatest([
-        ...this.selectors.map(selector =>
-          this.store.state$.pipe(select(selector))
-        )
-      ]);
-
-    timeout$
-      .pipe(
-        take(1),
-        switchMap(() => this.triggerRender$.pipe(startWith(true))),
-        debounceTime(50),
-        switchMap(attachCSS$),
-        switchMap(selectors$),
-        takeUntil(this.onDestroy$),
-        tap(() => this.emit(this.baseActionMap.get(ReactiveActions.RENDER)()))
-      )
-      .subscribe(this.__render.bind(this));
   }
 
   disconnectedCallback() {
@@ -137,8 +125,20 @@ export abstract class ReactiveComponent<
   }
 
   createAction<T = any>(type: string): Creator & { type: string } {
-    return action(`${ACTION_PREFIX} ${type}`, fsa<T>());
+    return action(`[${type}]: ${this.tagName}`, fsa<T>());
   }
+
+  private attachCSS$ = () =>
+    from(this.attachCSS()).pipe(
+      tap(() => this.emit(this.baseActionMap.get(ReactiveActions.CSS_READY)()))
+    );
+
+  private selectors$ = () =>
+    combineLatest([
+      ...this.selectors.map(selector =>
+        this.store.state$.pipe(select(selector))
+      )
+    ]);
 
   private attachCSS() {
     const addCss = (styleUrlOrCss: string) =>

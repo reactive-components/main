@@ -37,7 +37,11 @@ export class AppComponent {
   @ObservableEvent()
   public todoEvents$: Observable<any>;
 
+  @ObservableEvent()
+  public logEvents$: Observable<any>;
+
   constructor() {
-    // this.todoEvents$.subscribe(console.log);
+    this.todoEvents$.subscribe(console.log);
+    this.logEvents$.subscribe(console.log);
   }
 }

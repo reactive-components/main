@@ -6,11 +6,7 @@ import {
   ReactiveComponent,
   formatDate
 } from '@reactive-components/utils';
-import {
-  TodoState,
-  getLog,
-  hideLogItem
-} from '@reactive-components/store';
+import { TodoState, getLog, hideLogItem, TodoStore } from '@reactive-components/store';
 
 export interface LogItem {
   action: Action & { payload: any };
@@ -56,23 +52,18 @@ export function LogComponentFactory<State>(
   styles: string[]
 ) {
   return class extends LogComponent<State> {
-    readonly store: BaseStore<State>;
-    readonly selectors: any[];
-    readonly styles: string[];
-
-    constructor() {
-      super();
-      this.store = store;
-      this.selectors = selectors;
-      this.styles = styles;
-    }
+    readonly store = store;
+    readonly selectors = selectors;
+    readonly styles = styles;
   };
 }
 
-export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
-  class MyLastLogComponent extends LogComponentFactory<
-    TodoState
-  >(store, selectors, styles) {
+export function MyLogFactory(store = new TodoStore(), selectors = [getLog], styles = [logCss]) {
+  class MyLastLogComponent extends LogComponentFactory<TodoState>(
+    store,
+    selectors,
+    styles
+  ) {
     public selectors = this.getSelectors(this.itemsCount);
 
     static get observedAttributes() {
@@ -91,14 +82,6 @@ export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
     }
 
     render(log) {
-      this.dispatchEvent(
-        new CustomEvent('log-change', {
-          detail: {
-            log: log
-          }
-        })
-      );
-
       return html`
         ${this.itemsCount !== Infinity
           ? html`
@@ -120,7 +103,9 @@ export function MyLogFactory(store, selectors = [getLog], styles = [logCss]) {
         )
       ];
     }
-  };
+  }
 
   customElements.define('log-component', MyLastLogComponent);
+
+  return customElements.whenDefined('log-component').then(() => customElements.get('log-component'))
 }

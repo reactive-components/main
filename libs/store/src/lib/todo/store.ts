@@ -4,12 +4,32 @@ import { BaseStore } from '@reactive-components/utils';
 import { reducerFn } from './reducers';
 import { TodoState } from './interfaces';
 import { initialState } from './models';
-import { addTodo } from './actions';
+import {
+  addTodo,
+  clearCompleted,
+  toggleCompleted,
+  toggleAllCompleted,
+  setFilter,
+  removeTodo,
+  hideLogItem
+} from './actions';
+import { union } from 'ts-action';
+import { Subject } from 'rxjs';
+
+const actions = union(
+  addTodo,
+  clearCompleted,
+  toggleCompleted,
+  toggleAllCompleted,
+  setFilter,
+  removeTodo,
+  hideLogItem
+);
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoStore extends BaseStore<TodoState> {
+export class TodoStore extends BaseStore<TodoState, typeof actions> {
   static readonly initialState: TodoState = initialState;
   static readonly reducer = reducerFn;
   static readonly transducers = [history];
@@ -18,9 +38,11 @@ export class TodoStore extends BaseStore<TodoState> {
     super({
       initialState: TodoStore.initialState,
       reducer: TodoStore.reducer,
-      transducers: TodoStore.transducers
+      transducers: TodoStore.transducers,
+      actionSubject: new Subject(),
+      destroySubject: new Subject()
     });
 
-    this.dispatch(addTodo({ text: 'Buy a unicorn', completed: true }))
+    this.dispatch(addTodo({ text: 'Buy a unicorn', completed: true }));
   }
 }

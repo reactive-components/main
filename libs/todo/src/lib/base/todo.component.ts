@@ -8,7 +8,8 @@ import {
   toggleCompleted,
   clearCompleted,
   setFilter,
-  removeTodo
+  removeTodo,
+  TodoStore
 } from '@reactive-components/store';
 import { todoCss } from './todocss';
 import { html } from 'lit-html';
@@ -50,7 +51,10 @@ export abstract class TodoComponent<S> extends ReactiveComponent<S> {
         <footer class="footer">
           <span class="todo-count">
             <strong>${todos.filter(todo => !todo.completed).length}</strong>
-            ${todos.filter(todo => !todo.completed).length === 1 ? 'item' : 'items'} left
+            ${todos.filter(todo => !todo.completed).length === 1
+              ? 'item'
+              : 'items'}
+            left
           </span>
 
           <ul class="filters">
@@ -158,23 +162,21 @@ export function TodoComponentFactory<State>(
   styles: string[]
 ) {
   return class extends TodoComponent<State> {
-    readonly store: BaseStore<State>;
-    readonly selectors: any[];
-    readonly styles: string[];
-
-    constructor() {
-      super();
-      this.store = store;
-      this.selectors = selectors;
-      this.styles = styles;
-    }
+    readonly store = store;
+    readonly selectors = selectors;
+    readonly styles = styles;
   };
 }
 
 export function MyTodoFactory(
-  store,
+  store: TodoStore = new TodoStore(),
   selectors = [getFilteredTodos, getFilter],
   styles = [todoCss]
 ) {
-  customElements.define('todo-component', TodoComponentFactory<TodoState>(store, selectors, styles));
+  customElements.define(
+    'todo-component',
+    TodoComponentFactory<TodoState>(store, selectors, styles)
+  );
+
+  return customElements.whenDefined('todo-component').then(() => customElements.get('todo-component'))
 }
