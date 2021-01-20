@@ -51,7 +51,7 @@
     "@reactive-redux/store": "^6.0.1",
     "@typebytes/ngx-template-streams": "^1.1.0",
     "core-js": "^2.5.4",
-    "immer": "^3.1.1",
+    "immer": "^8.0.1",
     "lit-html": "^1.0.0",
     "rxjs": "^6.5.2",
     "zone.js": "^0.9.1"
